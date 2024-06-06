@@ -23,8 +23,7 @@ import Surveys from "./Pages/Home/Surveys/Surveys";
 import SurveyViewDetails from "./Pages/Home/SurveyViewDetails/SurveyViewDetails";
 import ParticipatedSurveys from "./Pages/Dashboard/User/ParticipatedSurveys/ParticipatedSurveys";
 import ManageSurveys from "./Pages/Dashboard/Admin/ManageSurveys/ManageSurveys";
-import ProUser from "./Pages/Home/ProUser/ProUser";
-import ProMembership from "./Pages/Home/ProUser/ProMembership/ProMembership";
+import ProMembership from "./Pages/Home/ProMembership/ProMembership";
 
 const router = createBrowserRouter([
   {
