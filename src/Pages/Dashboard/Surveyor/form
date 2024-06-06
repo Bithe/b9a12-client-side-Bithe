@@ -1,0 +1,123 @@
+const CreateSurvey = () => {
+  return (
+    <div className="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-2xl">
+      <h2 className="text-2xl font-medium mb-4">Survey Create</h2>
+      <form>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">Title</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
+            required
+          ></input>
+        </div>
+       
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">
+            Select Survey Category
+          </label>
+          <select
+            id="gender"
+            name="gender"
+            className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
+            required
+          >
+            <option value="product-quality">Product Quality</option>
+            <option value="customer-service">Customer Service</option>
+            <option value="cleanliness">Cleanliness</option>
+            <option value="menu-variety">Menu Variety</option>
+            <option value="pricing">Pricing</option>
+          </select>
+        </div>
+        <div className="mb-4">
+          {/* <label className="block text-gray-700 font-medium mb-2">
+          Did you find our staff to be attentive during your visit?
+          </label> */}
+          <div className="flex flex-wrap -mx-2">
+            <div className="px-2 w-1/3">
+              <label className="block text-gray-700 font-medium mb-2">
+                <input
+                  type="radio"
+                  id="color-red"
+                  name="color"
+                  value="red"
+                  className="mr-2"
+                ></input>
+                Yes
+              </label>
+            </div>
+            <div className="px-2 w-1/3">
+              <label className="block text-gray-700 font-medium mb-2">
+                <input
+                  type="radio"
+                  id="color-blue"
+                  name="color"
+                  value="blue"
+                  className="mr-2"
+                ></input>
+                No
+              </label>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">
+            Description
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
+            rows="5"
+          ></textarea>
+        </div>
+
+        {/*  */}
+        <div className="-mx-3 flex flex-wrap">
+          <div className="w-full px-3 sm:w-1/2">
+            <div className="mb-5">
+              <label className="mb-3 block text-base font-medium text-[#07074D]">
+                Date
+              </label>
+              <input
+                type="date"
+                name="date"
+                id="date"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              />
+            </div>
+          </div>
+          <div className="w-full px-3 sm:w-1/2">
+            <div className="mb-5">
+              <label className="mb-3 block text-base font-medium text-[#07074D]">
+                Time
+              </label>
+              <input
+                type="time"
+                name="time"
+                id="time"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/*  */}
+        <div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default CreateSurvey;
