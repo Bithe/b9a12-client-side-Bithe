@@ -1,14 +1,17 @@
 import {loadStripe} from '@stripe/stripe-js';
 import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from '../../../components/Checkout/CheckoutForm';
 
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const ProMembership = () => {
+
+    const price = 79;
   return (
     <div className="container mx-auto lg:px-20 items-center">
       <div className="flex justify-center items-center h-screen">
-      <div className="bg-gradient-to-br from-blue-100 via-orange-100 to-purple-100 p-16 rounded-lg shadow-lg relative border-8 border-orange-200 max-w-sm">
+      <div className=" lg:m-20 m-8 bg-gradient-to-br from-blue-100 via-orange-100 to-purple-100 lg:p-20 p-2 rounded-lg shadow-lg relative border-8 border-orange-200 w-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -22,14 +25,14 @@ const ProMembership = () => {
             POPULAR
           </p>
           <div>
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-4">
               <p className="font-extrabold text-3xl mb-2">Pro</p>
             </div>
-            <p className="opacity-60 text-center">
+            <p className="opacity-60">
               For agencies and businesses
             </p>
-            <p className="opacity-60 text-center"></p>
-            <div className="flex gap-4 justify-center">
+            <p className="opacity-60"></p>
+            <div className="flex gap-4 ">
               <div className="flex flex-col items-center my-8">
                 <p className="font-extrabold text-4xl">$79</p>
                 <p className="text-sm opacity-60">/month</p>
@@ -119,12 +122,12 @@ const ProMembership = () => {
               Premium Support
             </p>
 
-            <Elements stripe={stripePromise}></Elements>
+            <Elements stripe={stripePromise}>
+                <CheckoutForm price={price}></CheckoutForm>
+            </Elements>
             <div className="flex justify-center mt-8">
 
-              <button className="px-4 py-2 border-violet-400 border-4 hover:bg-violet-100 rounded-xl">
-                Get Started
-              </button>
+             
             </div>
           </div>
         </div>

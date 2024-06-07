@@ -54,7 +54,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/pro-membership",
-        element: <ProMembership></ProMembership>,
+        element: <PrivateRoute><ProMembership></ProMembership></PrivateRoute>,
       },
 
       {
