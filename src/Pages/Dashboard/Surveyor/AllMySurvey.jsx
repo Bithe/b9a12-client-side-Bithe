@@ -98,6 +98,9 @@ const AllMySurvey = () => {
                 Deadline
               </th>
               <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
+              <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -118,16 +121,19 @@ const AllMySurvey = () => {
                   <td className="py-2 px-4 border-b border-gray-200">
                     {new Date(survey.deadline).toLocaleDateString()}
                   </td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {survey.status}{" "}
+                  </td>
 
                   <td className="py-2 px-4 border-b border-gray-200">
-                      <Link
-                        to={`/dashboard/surveyor/update/${question.qId}`}
-                        key={question.qId}
-                      >
-                        <button className="text-indigo-600 hover:text-indigo-900 mr-4">
-                          Update
-                        </button>
-                      </Link>
+                    <Link
+                      to={`/dashboard/surveyor/update/${question.qId}`}
+                      key={question.qId}
+                    >
+                      <button className="text-indigo-600 hover:text-indigo-900 mr-4">
+                        Update
+                      </button>
+                    </Link>
 
                     <span>|</span>
                     <button

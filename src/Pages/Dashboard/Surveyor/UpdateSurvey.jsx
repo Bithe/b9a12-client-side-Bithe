@@ -107,7 +107,7 @@ const UpdateSurvey = () => {
             Title
           </label>
           <input
-            defaultValue={data?.title}
+            defaultValue={data.question}
             type="text"
             name="title"
             id="title"

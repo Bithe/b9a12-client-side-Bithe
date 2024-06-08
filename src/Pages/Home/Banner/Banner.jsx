@@ -8,10 +8,10 @@ const Banner = () => {
         >
           <div className="lg:px-52 lg:py-32">
             <h1 className="text-white lg:text-5xl font-extrabold text-center p-8">
-              Discover an exceptional cooking class tailored for you
+            Get valuable feedback from customers at your coffee shop
             </h1>
             <p className="text-white text-center p-8">
-              With countless pasta varieties available, essential to select the right type for your dish. Long, thin noodles like spaghetti or linguine pair perfectly with light sauces, while short pasta shapes such as penne or fusilli are ideal for hearty sauces that cling to every curve.
+            Life begins after coffee. Once you wake up and smell the coffee, it’s hard to go back to sleep. Just brewed happiness in a cup!
             </p>
             <div className="py-4 space-x-6">
               <button className="btn rounded-full lg:text-xl font-semibold bg-[#cdada5] px-8 border-none">

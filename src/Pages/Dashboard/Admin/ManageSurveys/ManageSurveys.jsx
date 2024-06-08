@@ -22,7 +22,7 @@ const ManageSurveys = () => {
       onSuccess: (data) => {
         refetch();
         console.log(data);
-        toast.success("User role updated successfully!");
+        toast.success("Survey status updated successfully!");
       },
     });
   

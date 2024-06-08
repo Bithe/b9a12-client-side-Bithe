@@ -149,7 +149,7 @@ const Sidebar = () => {
             {/*  Menu Items */}
             <nav>
               {/* USER */}
-              {(role === "user" || role === "surveyor") && toggle && (
+              {(role === "user" || role === "surveyor" || role === "pro-user") && toggle && (
                 <>
                   <NavLink
                     to="/dashboard/user/surveys"
@@ -266,7 +266,7 @@ const Sidebar = () => {
           <hr />
 
           {/* Profile Menu */}
-          {role === "User" && (
+          {role === "user" && (
             <NavLink
               className={({ isActive }) =>
                 `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
