@@ -28,6 +28,7 @@ import SubmitSuccess from "./Pages/Home/SurveyForm/SubmitSuccess";
 import UpdateMySurvey from "./Pages/Dashboard/Surveyor/UpdateMySurvey";
 import SurveyResponses from "./Pages/Dashboard/Surveyor/SurveyResponses";
 import ToggleChart from "./Pages/Dashboard/Surveyor/ToggleChart";
+import ReportSuccess from "./Pages/Home/SurveyForm/ReportSuccess";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <SubmitSuccess></SubmitSuccess>{" "}
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/reportSuccess",
+        element: (
+          <PrivateRoute>
+            <ReportSuccess></ReportSuccess>{" "}
           </PrivateRoute>
         ),
       },

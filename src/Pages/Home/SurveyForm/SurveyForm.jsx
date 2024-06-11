@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../components/AuthProvider/AuthProvider";
 import { toast } from "react-toastify";
 import { axiosSecure } from "../../../hooks/useAxiosSecure";
@@ -37,10 +37,25 @@ const SurveyForm = () => {
     onSuccess: () => {
       console.log("Saved data");
       toast("Thank you for your response");
-      navigate('/submitSuccess'); // Redirect to a thank-you page after successful submission
+      navigate('/submitSuccess'); 
+    },
+  });
+
+
+  // TanStack Query for reporting the survey---------------------------------------------
+  const { mutateAsync: reportSurvey } = useMutation({
+    mutationFn: async (reportDetails) => {
+      const { data } = await axiosSecure.post(`/report-survey`, reportDetails);
+      return data;
+    },
+    onSuccess: () => {
+      console.log("Reported survey");
+      toast("Survey has been reported");
+      navigate('/reportSuccess'); 
 
     },
   });
+  // ---------------------------------------------------------
 
   // Function to capture user's response for a question
   const handleQuestionResponse = (questionId, questionTitle, option) => {
@@ -85,6 +100,22 @@ const SurveyForm = () => {
 
     await mutateAsync(userResponse);
   };
+
+
+  // HANDLE REPORT------------------------------------------------------
+  const handleReport = async () => {
+    const reportDetails = {
+      surveyId: id,
+      email: user.email,
+      userName: user.displayName,
+      userPhoto: user?.photoURL,
+      reportDateTime: new Date().toISOString(),
+    };
+
+    await reportSurvey(reportDetails);
+  };
+  // -------------------------------------------
+
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -151,8 +182,9 @@ const SurveyForm = () => {
         >
           Submit
         </button>
-       <button
-          type="submit"
+        <button
+          type="button" 
+          onClick={handleReport} 
           className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
         >
           Report
