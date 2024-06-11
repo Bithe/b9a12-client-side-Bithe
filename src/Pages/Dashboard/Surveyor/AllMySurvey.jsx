@@ -101,14 +101,17 @@ const AllMySurvey = () => {
                 Status
               </th>
               <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                Questions
+              </th>
+              <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody>
             {surveys.map((survey) =>
-              survey.questions.map((question, idx) => (
-                <tr key={`${survey._id}-${idx}`}>
+              // survey.questions.map((question, idx) => (
+                <tr key={`${survey._id}`}>
                   <td className="py-2 px-4 border-b border-gray-200">
                     {survey.title}
                   </td>
@@ -124,16 +127,34 @@ const AllMySurvey = () => {
                   <td className="py-2 px-4 border-b border-gray-200">
                     {survey.status}{" "}
                   </td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    <ul>
+                      {survey.questions && survey.questions.map((question, idx) => (
+                        <li key={idx}>{question?.question}</li>
+                      ))}
+                    </ul>
+                  </td>
 
                   <td className="py-2 px-4 border-b border-gray-200">
-                    <Link
+                    {/* <Link
                       to={`/dashboard/surveyor/update/${question.qId}`}
                       key={question.qId}
                     >
                       <button className="text-indigo-600 hover:text-indigo-900 mr-4">
                         Update
                       </button>
+                    </Link> */}
+
+                    {/*  */}
+                    <Link
+                      to={`/dashboard/surveyor/update/${survey._id}`}
+                      // key={question.qId}
+                    >
+                      <button className="text-indigo-600 hover:text-indigo-900 mr-4">
+                        Update
+                      </button>
                     </Link>
+                    {/*  */}
 
                     <span>|</span>
                     <button
@@ -144,7 +165,7 @@ const AllMySurvey = () => {
                     </button>
                   </td>
                 </tr>
-              ))
+              // ))
             )}
           </tbody>
         </table>

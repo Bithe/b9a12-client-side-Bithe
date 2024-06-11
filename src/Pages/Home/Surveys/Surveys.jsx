@@ -54,7 +54,7 @@ const Surveys = () => {
             className="p-2 border border-gray-300 rounded"
           >
             <option value="">Sort by</option>
-            <option value="votes">Vote Count</option>
+            <option value="responseCount">Response Count</option>
           </select>
         </div>
       </div>

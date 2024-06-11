@@ -15,9 +15,6 @@ const CreateSurvey = () => {
     {
       qId: uuidv4(),
       question: "",
-      description: "",
-      // category: "",
-      deadline: "",
       option: "",
       yesCount: 0,
       noCount: 0,
@@ -94,6 +91,7 @@ const CreateSurvey = () => {
       status,
       questions,
       responseCount: 0,
+      report: 0,
 
       surveyor: {
         email,

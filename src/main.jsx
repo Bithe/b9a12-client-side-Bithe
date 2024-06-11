@@ -15,7 +15,7 @@ import MyReports from "./Pages/Dashboard/User/MyReports";
 import CreateSurvey from "./Pages/Dashboard/Surveyor/CreateSurvey";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AllMySurvey from "./Pages/Dashboard/Surveyor/AllMySurvey";
-import UpdateSurvey from "./Pages/Dashboard/Surveyor/UpdateSurvey";
+// import UpdateSurvey from "./Pages/Dashboard/Surveyor/UpdateSurvey";
 import ManageUsers from "./Pages/Dashboard/Admin/ManageUsers";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import SurveyForm from "./Pages/Home/SurveyForm/SurveyForm";
@@ -24,6 +24,10 @@ import SurveyViewDetails from "./Pages/Home/SurveyViewDetails/SurveyViewDetails"
 import ParticipatedSurveys from "./Pages/Dashboard/User/ParticipatedSurveys/ParticipatedSurveys";
 import ManageSurveys from "./Pages/Dashboard/Admin/ManageSurveys/ManageSurveys";
 import ProMembership from "./Pages/Home/ProMembership/ProMembership";
+import SubmitSuccess from "./Pages/Home/SurveyForm/SubmitSuccess";
+import UpdateMySurvey from "./Pages/Dashboard/Surveyor/UpdateMySurvey";
+import SurveyResponses from "./Pages/Dashboard/Surveyor/SurveyResponses";
+import ToggleChart from "./Pages/Dashboard/Surveyor/ToggleChart";
 
 const router = createBrowserRouter([
   {
@@ -53,8 +57,20 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/submitSuccess",
+        element: (
+          <PrivateRoute>
+            <SubmitSuccess></SubmitSuccess>{" "}
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "/pro-membership",
-        element: <PrivateRoute><ProMembership></ProMembership></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <ProMembership></ProMembership>
+          </PrivateRoute>
+        ),
       },
 
       {
@@ -119,11 +135,22 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/surveyor/update/:qId",
+        path: "/dashboard/surveyor/update/:id",
         element: (
           <PrivateRoute>
             {" "}
-            <UpdateSurvey></UpdateSurvey>
+            {/* <UpdateSurvey></UpdateSurvey> */}
+            <UpdateMySurvey></UpdateMySurvey>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/surveyor/surveys",
+        element: (
+          <PrivateRoute>
+            {" "}
+            {/* <UpdateSurvey></UpdateSurvey> */}
+            <SurveyResponses></SurveyResponses>{" "}
           </PrivateRoute>
         ),
       },
@@ -138,10 +165,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/admin/surveys",
+        path: "/dashboard/surveyor/surveys/:id",
         element: (
           <PrivateRoute>
-            <ManageSurveys></ManageSurveys>{" "}
+            <ToggleChart></ToggleChart>{" "}
           </PrivateRoute>
         ),
       },

@@ -208,7 +208,7 @@ const Sidebar = () => {
                     <span className="mx-4 font-medium">Modify My Survey</span>
                   </NavLink>
                   <NavLink
-                    to="/dashboard/surveyor/all-my-survey"
+                    to="/dashboard/surveyor/surveys"
                     className={({ isActive }) =>
                       `flex items-center px-4 py-2 my-5 transition-colors duration-300 transform hover:bg-gray-300 hover:text-gray-700 ${
                         isActive ? "bg-gray-300 text-gray-700" : "text-gray-600"
@@ -219,6 +219,19 @@ const Sidebar = () => {
                     <span className="mx-4 font-medium">
                       Responses My Survey{" "}
                     </span>
+                  </NavLink>
+
+                  <NavLink
+                    to="/dashboard/surveyor/surveys/:id"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5 transition-colors duration-300 transform hover:bg-gray-300 hover:text-gray-700 ${
+                        isActive ? "bg-gray-300 text-gray-700" : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <FaUsers className="w-5 h-5" />
+                    <span className="mx-4 font-medium">
+Toggle                    </span>
                   </NavLink>
                 </>
               )}

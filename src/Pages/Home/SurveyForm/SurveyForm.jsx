@@ -1,14 +1,16 @@
 import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../components/AuthProvider/AuthProvider";
-import useAxiosSecure, { axiosSecure } from "../../../hooks/useAxiosSecure";
 import { toast } from "react-toastify";
+import { axiosSecure } from "../../../hooks/useAxiosSecure";
 
 const SurveyForm = () => {
   const { user } = useContext(AuthContext);
-  const { id } = useParams(); // Get the survey ID from URL
+  const { id } = useParams(); 
+  const navigate = useNavigate(); 
+
 
   const [questionsResponse, setQuestionsResponse] = useState({});
   
@@ -35,6 +37,8 @@ const SurveyForm = () => {
     onSuccess: () => {
       console.log("Saved data");
       toast("Thank you for your response");
+      navigate('/submitSuccess'); // Redirect to a thank-you page after successful submission
+
     },
   });
 
@@ -72,6 +76,7 @@ const SurveyForm = () => {
           questionId,
           question: questionTitle,
           option,
+          
         })
       ),
     };
@@ -113,10 +118,11 @@ const SurveyForm = () => {
               {/* OPTIONS */}
               <div className="mb-4">
                 <div className="flex items-center">
-                  <label className="inline-flex items-center mr-4">
+                <label className="inline-flex items-center mr-4">
                     <input
                       type="radio"
                       value="yes"
+                      checked={questionsResponse[question.qId]?.option === 'yes'}
                       onChange={() =>
                         handleQuestionResponse(question.qId, question.question, "yes")
                       }
@@ -127,6 +133,7 @@ const SurveyForm = () => {
                     <input
                       type="radio"
                       value="no"
+                      checked={questionsResponse[question.qId]?.option === 'no'}
                       onChange={() =>
                         handleQuestionResponse(question.qId, question.question, "no")
                       }
@@ -138,11 +145,17 @@ const SurveyForm = () => {
             </div>
           ))}
         </div>
-        <button
+       <button
           type="submit"
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 mr-12"
         >
           Submit
+        </button>
+       <button
+          type="submit"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Report
         </button>
       </form>
     </div>
