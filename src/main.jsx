@@ -22,7 +22,6 @@ import SurveyForm from "./Pages/Home/SurveyForm/SurveyForm";
 import Surveys from "./Pages/Home/Surveys/Surveys";
 import SurveyViewDetails from "./Pages/Home/SurveyViewDetails/SurveyViewDetails";
 import ParticipatedSurveys from "./Pages/Dashboard/User/ParticipatedSurveys/ParticipatedSurveys";
-import ManageSurveys from "./Pages/Dashboard/Admin/ManageSurveys/ManageSurveys";
 import ProMembership from "./Pages/Home/ProMembership/ProMembership";
 import SubmitSuccess from "./Pages/Home/SurveyForm/SubmitSuccess";
 import UpdateMySurvey from "./Pages/Dashboard/Surveyor/UpdateMySurvey";

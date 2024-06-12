@@ -5,7 +5,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../components/AuthProvider/AuthProvider";
 import { toast } from "react-toastify";
 import { axiosSecure } from "../../../hooks/useAxiosSecure";
-import AddComment from "./AddComment";
 import useRole from "../../../hooks/useRole";
 
 const SurveyForm = () => {
@@ -111,6 +110,8 @@ const SurveyForm = () => {
   const handleReport = async () => {
     const reportDetails = {
       surveyId: id,
+      reportedSurveyTitle: survey.title, 
+      reportedSurveyDescription: survey.description,
       email: user.email,
       userName: user.displayName,
       userPhoto: user?.photoURL,
