@@ -29,6 +29,7 @@ import UpdateMySurvey from "./Pages/Dashboard/Surveyor/UpdateMySurvey";
 import SurveyResponses from "./Pages/Dashboard/Surveyor/SurveyResponses";
 import ToggleChart from "./Pages/Dashboard/Surveyor/ToggleChart";
 import ReportSuccess from "./Pages/Home/SurveyForm/ReportSuccess";
+import Comments from "./Pages/Dashboard/ProUser/Comments";
 
 const router = createBrowserRouter([
   {
@@ -122,6 +123,15 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <SurveyForm></SurveyForm>
+          </PrivateRoute>
+        ),
+      },
+      // PRO-USER
+      {
+        path: "/dashboard/user/comments",
+        element: (
+          <PrivateRoute>
+            <Comments></Comments>
           </PrivateRoute>
         ),
       },

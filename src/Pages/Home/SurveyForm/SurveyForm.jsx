@@ -1,19 +1,23 @@
 import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {  useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../components/AuthProvider/AuthProvider";
 import { toast } from "react-toastify";
 import { axiosSecure } from "../../../hooks/useAxiosSecure";
+import AddComment from "./AddComment";
+import useRole from "../../../hooks/useRole";
 
 const SurveyForm = () => {
   const { user } = useContext(AuthContext);
-  const { id } = useParams(); 
-  const navigate = useNavigate(); 
+  const [role] = useRole();
 
+  const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const [questionsResponse, setQuestionsResponse] = useState({});
-  
+
   // Fetch the specific survey by ID
   const {
     data: survey,
@@ -31,16 +35,18 @@ const SurveyForm = () => {
   // TanStack Query for posting the data
   const { mutateAsync } = useMutation({
     mutationFn: async (addUserResponse) => {
-      const { data } = await axiosSecure.post(`/user-response`, addUserResponse);
+      const { data } = await axiosSecure.post(
+        `/user-response`,
+        addUserResponse
+      );
       return data;
     },
     onSuccess: () => {
       console.log("Saved data");
       toast("Thank you for your response");
-      navigate('/submitSuccess'); 
+      navigate("/submitSuccess");
     },
   });
-
 
   // TanStack Query for reporting the survey---------------------------------------------
   const { mutateAsync: reportSurvey } = useMutation({
@@ -51,8 +57,7 @@ const SurveyForm = () => {
     onSuccess: () => {
       console.log("Reported survey");
       toast("Survey has been reported");
-      navigate('/reportSuccess'); 
-
+      navigate("/reportSuccess");
     },
   });
   // ---------------------------------------------------------
@@ -71,6 +76,7 @@ const SurveyForm = () => {
     const title = survey.title;
     const description = survey.description;
     const deadline = survey.deadline;
+    const comment = e.target.comment.value;
     const currentDateTime = new Date().toISOString();
     const email = user.email;
     const userName = user.displayName;
@@ -85,13 +91,13 @@ const SurveyForm = () => {
       email,
       userName,
       userPhoto,
+      comment,
       dateTime: currentDateTime,
       responses: Object.entries(questionsResponse).map(
         ([questionId, { questionTitle, option }]) => ({
           questionId,
           question: questionTitle,
           option,
-          
         })
       ),
     };
@@ -100,7 +106,6 @@ const SurveyForm = () => {
 
     await mutateAsync(userResponse);
   };
-
 
   // HANDLE REPORT------------------------------------------------------
   const handleReport = async () => {
@@ -115,7 +120,6 @@ const SurveyForm = () => {
     await reportSurvey(reportDetails);
   };
   // -------------------------------------------
-
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -132,30 +136,46 @@ const SurveyForm = () => {
   return (
     <div className="container mx-auto lg:px-20 lg:py-8">
       <Helmet>
-        <title>Surveyor | Participate in Survey</title>
+        <title>Zendesk | Participate in Survey</title>
       </Helmet>
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 py-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-md rounded px-8 py-6"
+      >
         {/* Display survey details */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block text-gray-700 text-sm font-bold mb-4">
             Title: {survey.title}
+          </label>
+          <label className="block text-gray-700 text-sm font-bold mb-4">
+            Description: {survey.description}
           </label>
           {/* Render questions */}
           {survey.questions.map((question) => (
-            <div key={question.qId} className="mb-4 p-4 border rounded shadow w-full">
+            <div
+              key={question.qId}
+              className="mb-4 p-4 border rounded shadow w-full"
+            >
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 {question.question}
               </label>
               {/* OPTIONS */}
               <div className="mb-4">
                 <div className="flex items-center">
-                <label className="inline-flex items-center mr-4">
+                  <label className="inline-flex items-center mr-4">
                     <input
                       type="radio"
+                      name="yes"
                       value="yes"
-                      checked={questionsResponse[question.qId]?.option === 'yes'}
+                      checked={
+                        questionsResponse[question.qId]?.option === "yes"
+                      }
                       onChange={() =>
-                        handleQuestionResponse(question.qId, question.question, "yes")
+                        handleQuestionResponse(
+                          question.qId,
+                          question.question,
+                          "yes"
+                        )
                       }
                     />
                     <span className="ml-2">Yes</span>
@@ -163,10 +183,15 @@ const SurveyForm = () => {
                   <label className="inline-flex items-center">
                     <input
                       type="radio"
+                      name="no"
                       value="no"
-                      checked={questionsResponse[question.qId]?.option === 'no'}
+                      checked={questionsResponse[question.qId]?.option === "no"}
                       onChange={() =>
-                        handleQuestionResponse(question.qId, question.question, "no")
+                        handleQuestionResponse(
+                          question.qId,
+                          question.question,
+                          "no"
+                        )
                       }
                     />
                     <span className="ml-2">No</span>
@@ -176,15 +201,40 @@ const SurveyForm = () => {
             </div>
           ))}
         </div>
-       <button
+
+        {/* ADD COMMENT---------------------------------------------------------- */}
+
+        {role === "pro-user" && (
+          <div className="flex mb-8">
+            <div className="h-80 px-7 w-full rounded-[12px] bg-white p-4 shadow-md border">
+              <p className="text-xl font-semibold text-blue-900 cursor-pointer transition-all hover:text-black">
+                Add Comment
+              </p>
+              <textarea
+                name="comment"
+                id="comment"
+                className="h-40 px-3 text-sm py-1 mt-5 outline-none border-gray-300 w-full resize-none border rounded-lg placeholder:text-sm"
+                placeholder="Add your comments here"
+              ></textarea>
+
+              {/* <div className="flex justify-between mt-2"> 
+                <p className="text-sm text-blue-900 ">Enter atleast 8 characters</p>
+                <button className="h-12 w-[150px] bg-blue-400 text-sm text-white rounded-lg transition-all cursor-pointer hover:bg-blue-600">
+                    Submit comment
+                </button>
+            </div>    */}
+            </div>
+          </div>
+        )}
+        <button
           type="submit"
           className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 mr-12"
         >
           Submit
         </button>
         <button
-          type="button" 
-          onClick={handleReport} 
+          type="button"
+          onClick={handleReport}
           className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
         >
           Report

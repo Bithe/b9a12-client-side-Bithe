@@ -19,6 +19,7 @@ import { Helmet } from "react-helmet-async";
 import ToggleBtn from "../Shared/ToggleBtn";
 import { FaUsers } from "react-icons/fa";
 import { MdOutlineManageSearch } from "react-icons/md";
+import { LiaComments } from "react-icons/lia";
 
 const Sidebar = () => {
   const { user } = useContext(AuthContext);
@@ -148,39 +149,63 @@ const Sidebar = () => {
 
             {/*  Menu Items */}
             <nav>
-              {/* USER */}
-              {(role === "user" || role === "surveyor" || role === "pro-user") && toggle && (
+              {/* USER-------------------------------------------------------------- */}
+              {(role === "user" ||
+                role === "surveyor" ||
+                role === "pro-user") &&
+                toggle && (
+                  <>
+                    <NavLink
+                      to="/dashboard/user/surveys"
+                      end
+                      className={({ isActive }) =>
+                        `flex items-center px-4 py-2 my-5 transition-colors duration-300 transform hover:bg-gray-300 hover:text-gray-700 ${
+                          isActive
+                            ? "bg-gray-300 text-gray-700"
+                            : "text-gray-600"
+                        }`
+                      }
+                    >
+                      <PiHandTapDuotone className="w-5 h-5" />
+                      <span className="mx-4 font-medium">
+                        My Participated Surveys
+                      </span>
+                    </NavLink>
+
+                    <NavLink
+                      to="my-reports"
+                      className={({ isActive }) =>
+                        `flex items-center px-4 py-2 my-5 transition-colors duration-300 transform hover:bg-gray-300 hover:text-gray-700 ${
+                          isActive
+                            ? "bg-gray-300 text-gray-700"
+                            : "text-gray-600"
+                        }`
+                      }
+                    >
+                      <GoReport className="w-5 h-5" />
+                      <span className="mx-4 font-medium">My Reports</span>
+                    </NavLink>
+                  </>
+                )}
+
+              {/* PRO-USER ------------------------------------------------ */}
+              {role === "pro-user" && toggle && (
                 <>
                   <NavLink
-                    to="/dashboard/user/surveys"
-                    end
+                    to="/dashboard/user/comments"
                     className={({ isActive }) =>
                       `flex items-center px-4 py-2 my-5 transition-colors duration-300 transform hover:bg-gray-300 hover:text-gray-700 ${
                         isActive ? "bg-gray-300 text-gray-700" : "text-gray-600"
                       }`
                     }
                   >
-                    <PiHandTapDuotone className="w-5 h-5" />
-                    <span className="mx-4 font-medium">
-                      My Participated Surveys
-                    </span>
-                  </NavLink>
-
-                  <NavLink
-                    to="my-reports"
-                    className={({ isActive }) =>
-                      `flex items-center px-4 py-2 my-5 transition-colors duration-300 transform hover:bg-gray-300 hover:text-gray-700 ${
-                        isActive ? "bg-gray-300 text-gray-700" : "text-gray-600"
-                      }`
-                    }
-                  >
-                    <GoReport className="w-5 h-5" />
-                    <span className="mx-4 font-medium">My Reports</span>
+                    <LiaComments className="w-5 h-5" />
+                    <span className="mx-4 font-medium">Comments</span>
                   </NavLink>
                 </>
               )}
 
-              {/* SURVEYOR */}
+              {/* SURVEYOR ---------------------------------------------------------------- */}
               {/* Create SURVEY */}
 
               {role === "surveyor" && toggle && (
@@ -230,13 +255,14 @@ const Sidebar = () => {
                     }
                   >
                     <FaUsers className="w-5 h-5" />
-                    <span className="mx-4 font-medium">
-Toggle                    </span>
+                    <span className="mx-4 font-medium">Toggle </span>
                   </NavLink>
                 </>
               )}
 
+              {/* ------------------------------------------------------------------------------------- */}
               {/* ADMIN WILL SEE */}
+
               {/* MANAGE USERS  */}
               {role === "admin" && (
                 <>
@@ -278,25 +304,26 @@ Toggle                    </span>
         <div>
           <hr />
 
-          {/* Profile Menu */}
-          {role === "user" && (
-            <NavLink
-              className={({ isActive }) =>
-                `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                  isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
-                }`
-              }
-            >
-              <FcSettings className="w-5 h-5" />
-
-              <span
-                onClick={handleRequestSurveyor}
-                className="mx-4 font-medium"
+          {/* Profile Menu ----------------------------------------------------- */}
+          {role === "user" ||
+            (role === "pro-user" && (
+              <NavLink
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                  }`
+                }
               >
-                Request to be a Surveyor
-              </span>
-            </NavLink>
-          )}
+                <FcSettings className="w-5 h-5" />
+
+                <span
+                  onClick={handleRequestSurveyor}
+                  className="mx-4 font-medium"
+                >
+                  Request to be a Surveyor
+                </span>
+              </NavLink>
+            ))}
 
           <NavLink
             onClick={logout}
