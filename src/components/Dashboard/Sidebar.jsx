@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
-import { PiHandTapDuotone } from "react-icons/pi";
+import { PiHandTapDuotone, PiUsersThreeFill } from "react-icons/pi";
 import { GoReport } from "react-icons/go";
 import { FcSurvey } from "react-icons/fc";
 import Swal from "sweetalert2";
@@ -20,6 +20,7 @@ import ToggleBtn from "../Shared/ToggleBtn";
 import { FaUsers } from "react-icons/fa";
 import { MdOutlineManageSearch } from "react-icons/md";
 import { LiaComments } from "react-icons/lia";
+import { RiSecurePaymentFill } from "react-icons/ri";
 
 const Sidebar = () => {
   const { user } = useContext(AuthContext);
@@ -205,7 +206,7 @@ const Sidebar = () => {
                 </>
               )}
 
-              {/* SURVEYOR ---------------------------------------------------------------- */}
+              {/* SURVEYOR STARTS---------------------------------------------------------------- */}
               {/* Create SURVEY */}
 
               {role === "surveyor" && toggle && (
@@ -242,7 +243,7 @@ const Sidebar = () => {
                   >
                     <FaUsers className="w-5 h-5" />
                     <span className="mx-4 font-medium">
-                      Responses My Survey{" "}
+                       My Survey Responses{" "}
                     </span>
                   </NavLink>
 
@@ -260,8 +261,10 @@ const Sidebar = () => {
                 </>
               )}
 
-              {/* ------------------------------------------------------------------------------------- */}
-              {/* ADMIN WILL SEE */}
+              {/*SURVEYOR ENDS ------------------------------------------------------------------------------------- */}
+
+
+              {/* ADMIN WILL SEE---------------------------------------------------------------------------- */}
 
               {/* MANAGE USERS  */}
               {role === "admin" && (
@@ -281,6 +284,7 @@ const Sidebar = () => {
 
                     <span className="mx-4 font-medium">Manage Users</span>
                   </NavLink>
+
                   <NavLink
                     to="/dashboard/admin/surveys"
                     className={({ isActive }) =>
@@ -294,6 +298,35 @@ const Sidebar = () => {
                     <MdOutlineManageSearch className="w-5 h-5" />
 
                     <span className="mx-4 font-medium">Manage Surveys</span>
+                  </NavLink>
+
+                  <NavLink
+                    to="/dashboard/admin/payments"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? "bg-gray-300  text-gray-700"
+                          : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <RiSecurePaymentFill className="w-5 h-5" />
+
+                    <span className="mx-4 font-medium">All Payments</span>
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard/admin/responses"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? "bg-gray-300  text-gray-700"
+                          : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <PiUsersThreeFill className="w-5 h-5" />
+
+                    <span className="mx-4 font-medium">All Responses</span>
                   </NavLink>
                 </>
               )}

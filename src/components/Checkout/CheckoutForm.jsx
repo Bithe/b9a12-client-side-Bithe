@@ -83,6 +83,9 @@ const CheckoutForm = ({  price }) => {
           role: 'pro-user',
           status: 'Verified',
           transactionId: paymentIntent.id,
+          description: paymentIntent.description,
+          userTransactionId: paymentIntent.transactionId,
+          // userTransactionId: transactionId,
         };
         console.log(paymentInfo);
 
@@ -134,7 +137,7 @@ const CheckoutForm = ({  price }) => {
             {processing ? (
               <ImSpinner9 className='animate-spin m-auto' size={24} />
             ) : (
-              `Pay ${price}`
+              `Pay $ ${price}`
             )}
           </button>
          

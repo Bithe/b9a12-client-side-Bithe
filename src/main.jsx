@@ -26,9 +26,13 @@ import ProMembership from "./Pages/Home/ProMembership/ProMembership";
 import SubmitSuccess from "./Pages/Home/SurveyForm/SubmitSuccess";
 import UpdateMySurvey from "./Pages/Dashboard/Surveyor/UpdateMySurvey";
 import SurveyResponses from "./Pages/Dashboard/Surveyor/SurveyResponses";
-import ToggleChart from "./Pages/Dashboard/Surveyor/ToggleChart";
 import ReportSuccess from "./Pages/Home/SurveyForm/ReportSuccess";
 import Comments from "./Pages/Dashboard/ProUser/Comments";
+import ManageSurveys from "./Pages/Dashboard/Admin/ManageSurveys/ManageSurveys";
+import AllPayments from "./Pages/Dashboard/Admin/Payments/AllPayments";
+import SurveyResults from "./Pages/Home/SurveyResults/SurveyResults";
+import SurveyAllResponses from "./Pages/Dashboard/Admin/SurveyAllResponses/SurveyAllResponses";
+import SurveyDetails from "./Pages/Dashboard/Surveyor/SurveyDetails";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +58,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <SurveyForm></SurveyForm>{" "}
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/survey-results/:id",
+        element: (
+          <PrivateRoute>
+            <SurveyResults></SurveyResults>
           </PrivateRoute>
         ),
       },
@@ -166,11 +178,15 @@ const router = createBrowserRouter([
         path: "/dashboard/surveyor/surveys",
         element: (
           <PrivateRoute>
-            {" "}
-            {/* <UpdateSurvey></UpdateSurvey> */}
             <SurveyResponses></SurveyResponses>{" "}
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/dashboard/surveyor/surveys/:id",
+        element: <PrivateRoute>
+          <SurveyDetails></SurveyDetails>
+        </PrivateRoute>,
       },
 
       // ADMIN
@@ -183,10 +199,26 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/surveyor/surveys/:id",
+        path: "/dashboard/admin/surveys",
         element: (
           <PrivateRoute>
-            <ToggleChart></ToggleChart>{" "}
+            <ManageSurveys></ManageSurveys>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/admin/payments",
+        element: (
+          <PrivateRoute>
+            <AllPayments></AllPayments>{" "}
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/admin/responses",
+        element: (
+          <PrivateRoute>
+            <SurveyAllResponses></SurveyAllResponses>{" "}
           </PrivateRoute>
         ),
       },
