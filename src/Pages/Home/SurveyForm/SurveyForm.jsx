@@ -84,7 +84,7 @@ const SurveyForm = () => {
     const title = survey.title;
     const description = survey.description;
     const deadline = survey.deadline;
-    const comment = e.target.comment.value;
+    const comment = role === "pro-user" ? e.target.comment.value : ""; 
     const currentDateTime = new Date().toISOString();
     const email = user.email;
     const userName = user.displayName;

@@ -8,12 +8,30 @@ const SurveyDetails = () => {
   const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
   const [surveyResponses, setSurveyResponses] = useState([]);
+  const [totalYesVotes, setTotalYesVotes] = useState(0);
+  const [totalNoVotes, setTotalNoVotes] = useState(0);
 
   useEffect(() => {
     const fetchSurveyResponses = async () => {
       try {
         const { data } = await axiosSecure.get(`/dashboard/surveyor/surveys/${id}`);
         setSurveyResponses(data);
+
+        // Calculate total votes
+        let yesCount = 0;
+        let noCount = 0;
+        data.forEach(response => {
+          response.responses.forEach(res => {
+            if (res.option === "yes") {
+              yesCount += 1;
+            } else if (res.option === "no") {
+              noCount += 1;
+            }
+          });
+        });
+
+        setTotalYesVotes(yesCount);
+        setTotalNoVotes(noCount);
       } catch (error) {
         console.error("Error fetching survey responses:", error);
       }
@@ -25,6 +43,10 @@ const SurveyDetails = () => {
   return (
     <div className="container mx-auto">
       <h2 className="text-2xl font-bold mb-4">Survey Responses</h2>
+      <div className="mb-4 text-center">
+        <p className="font-extrabold">Total Yes Votes: {totalYesVotes}</p>
+        <p className="font-extrabold " >Total No Votes: {totalNoVotes}</p>
+      </div>
       <table className="min-w-full bg-white">
         <thead>
           <tr>
@@ -40,7 +62,13 @@ const SurveyDetails = () => {
               <td className="py-2 px-4 border-b border-gray-200">{index + 1}</td>
               <td className="py-2 px-4 border-b border-gray-200">{response.email}</td>
               <td className="py-2 px-4 border-b border-gray-200">{response.userName}</td>
-              <td className="py-2 px-4 border-b border-gray-200">{response.option}</td>
+              <td className="py-2 px-4 border-b border-gray-200">
+                <ul>
+                  {response.responses.map((res, index) => (
+                    <li key={index}>{res.question}: {res.option}</li>
+                  ))}
+                </ul>
+              </td>
             </tr>
           ))}
         </tbody>

@@ -35,6 +35,7 @@ const SurveyResponses = () => {
             <th className="py-2 px-4 border-b border-gray-200">Serial No</th>
             <th className="py-2 px-4 border-b border-gray-200">Title</th>
             <th className="py-2 px-4 border-b border-gray-200">Description</th>
+            <th className="py-2 px-4 border-b border-gray-200">Vote</th>
             <th className="py-2 px-4 border-b border-gray-200">Actions</th>
           </tr>
         </thead>
@@ -44,6 +45,7 @@ const SurveyResponses = () => {
               <td className="py-2 px-4 border-b border-gray-200">{index + 1}</td>
               <td className="py-2 px-4 border-b border-gray-200">{survey.title}</td>
               <td className="py-2 px-4 border-b border-gray-200">{survey.description}</td>
+              <td className="py-2 px-4 border-b border-gray-200">{survey.responseCount}</td>
               <td className="py-2 px-4 border-b border-gray-200">
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded"
