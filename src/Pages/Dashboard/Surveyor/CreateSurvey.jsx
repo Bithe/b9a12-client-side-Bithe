@@ -92,6 +92,7 @@ const CreateSurvey = () => {
       questions,
       responseCount: 0,
       report: 0,
+      vote: 0,
 
       surveyor: {
         email,

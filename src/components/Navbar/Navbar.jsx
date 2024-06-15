@@ -65,21 +65,34 @@ const Navbar = () => {
                 Home
               </NavLink>
               <NavLink
-                to="/queries"
+                to="/surveys"
+                data-tooltip-id="surveys"
+                data-tooltip-content="Surveys"
+                data-tooltip-place="top"
                 className={({ isActive }) =>
                   isActive
-                    ? "dark:bg-white dark:text-gray-900 border rounded-lg p-4 text-lg font-bold border-[#1a3147] bg-white text-black"
-                    : ""
+                    ? "dark:bg-white dark:text-gray-900 border rounded-lg p-4 font-bold border-[#1a3147] bg-white text-black"
+                    : "text-xl "
                 }
               >
-                Queries{" "}
-              </NavLink>
-              {/* PROTECTIVE ROUTE */}
+                Surveys
+              </NavLink> 
+              <NavLink
+              to="/pro-membership"
+              data-tooltip-id="surveys"
+              data-tooltip-content="Surveys"
+              data-tooltip-place="top"
+              className={({ isActive }) =>
+                isActive
+                  ? "dark:bg-white dark:text-gray-900 border rounded-lg p-4 font-bold border-[#1a3147] bg-white text-black"
+                  : "text-xl "
+              }
+            >
+              Pro-Membership
+            </NavLink>
               {/* PROTECTIVE ROUTE */}
               {user && (
-                <div className=" flex flex-col lg: justify-center gap-8">
-                 
-                </div>
+                <div className=" flex flex-col lg: justify-center gap-8"></div>
               )}
             </ul>
           </div>
@@ -143,9 +156,7 @@ const Navbar = () => {
             {/* PROTECTIVE ROUTE */}
 
             {user && (
-              <div className=" flex justify-center items-center gap-8">
-               
-              </div>
+              <div className=" flex justify-center items-center gap-8"></div>
             )}
           </ul>
         </div>
@@ -216,7 +227,6 @@ const Navbar = () => {
                   <li>
                     <a className="justify-between">{user.displayName}</a>
                   </li>
-
 
                   {/* DASHBOARD */}
 

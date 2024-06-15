@@ -1,5 +1,3 @@
-import fb from "../../assets/images/fb.png";
-import lk from "../../assets/images/lk.png";
 function Footer() {
   return (
     <footer className="px-4 divide-y bg-[#6F4E37] dark:bg-gray-100 text-gray-100 dark:text-gray-800">
@@ -10,7 +8,7 @@ function Footer() {
           <div className="flex items-center justify-center w-12 h-12 rounded-full bg-violet-400 dark:bg-violet-600">
            <img src="logo.jpg"></img>
           </div>
-          <span className="self-center text-2xl font-semibold">ProwSwap </span>
+          <span className="self-center text-2xl font-semibold">Zendesk </span>
         </a>
       </div>
       <div className="grid grid-cols-2 text-sm gap-x-3 gap-y-8 lg:w-2/3 sm:grid-cols-4">
@@ -19,10 +17,10 @@ function Footer() {
           <ul className="space-y-1">
          
             <li>
-              <a rel="noopener noreferrer" href="#">Recommendations</a>
+              <a rel="noopener noreferrer" href="#">Surveys</a>
             </li>
             <li>
-              <a rel="noopener noreferrer" href="#">Queries</a>
+              <a rel="noopener noreferrer" href="#">Surveyor</a>
             </li>
             <li>
               <a rel="noopener noreferrer" href="#">FAQ</a>
@@ -65,7 +63,7 @@ function Footer() {
     </div>
       </div>
   
-    <div className="py-6 text-sm text-center text-white dark:text-gray-600">© 1968 Company ProdSwap. All rights reserved.</div>
+    <div className="py-6 text-sm text-center text-white dark:text-gray-600">© 1968 Company Zendesk. All rights reserved.</div>
   </footer>
   );
 }
