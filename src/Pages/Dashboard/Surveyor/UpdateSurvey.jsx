@@ -74,22 +74,11 @@ const UpdateMySurvey = () => {
     }));
   };
 
-  // const handleQuestionChange = (index, e) => {
-  //   const { name, value } = e.target;
-  //   setFormState((prev) => {
-  //     const newQuestions = [...prev.questions];
-  //     newQuestions[index] = {
-  //       ...newQuestions[index],
-  //       [name]: value,
-  //     };
-  //     return { ...prev, questions: newQuestions };
-  //   });
-  // };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Only include fields that are actually changed
     const updatedFields = {};
     if (formState.title !== survey.title) updatedFields.title = formState.title;
     if (formState.description !== survey.description) updatedFields.description = formState.description;
