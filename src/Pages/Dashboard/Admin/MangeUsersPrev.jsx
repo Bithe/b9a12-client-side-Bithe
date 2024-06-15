@@ -36,7 +36,7 @@ const ManageUsers = () => {
   
     console.log(users);
   
-    // Handle update role
+    // HANDLE UPDATE ROLE
     const handleUpdateRole = async (selectedUser) => {
         console.log("Selected user:", selectedUser);
       
