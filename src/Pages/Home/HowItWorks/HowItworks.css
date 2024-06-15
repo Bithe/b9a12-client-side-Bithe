@@ -1,0 +1,63 @@
+.how-it-works-section {
+    background-color: #6F4E37; 
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  .how-it-works-section .max-w-screen-lg {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem; 
+    padding-right: 1.5rem; 
+  }
+  
+  .how-it-works-section h2 {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: white; 
+  }
+  
+  .how-it-works-section p {
+
+    margin-top: 0.5rem;
+    font-size: 1.125rem;
+    color: white; 
+  }
+  
+
+  
+  .how-it-works-section .flex {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .how-it-works-section .flex h3 {
+    margin-top: 1rem;
+    font-size: 1.5rem; 
+    font-weight: 600;
+    color: white; 
+  }
+  
+  .how-it-works-section .flex p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: white; 
+  }
+  
+  .how-it-works-section .flex .w-16 {
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff; 
+    border-radius: 9999px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+  }
+  
+  .how-it-works-section .flex svg {
+    width: 2rem;
+    height: 2rem;
+    color: #6F4E37; 
+  }
+  

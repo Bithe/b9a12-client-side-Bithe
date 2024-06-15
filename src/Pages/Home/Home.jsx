@@ -3,6 +3,7 @@ import Banner from "./Banner/Banner";
 import Faq from "./Faq/Faq";
 import LastestSurvey from "./LastestSurvey/LastestSurvey";
 import MostVotedSurvey from "./MostVotedSurvey/MostVotedSurvey";
+import HowItWorks from "./HowItWorks/HowItWorks";
 
 // import '../../components/Navbar/navbar.css';
 
@@ -31,6 +32,14 @@ const Home = () => {
       </section>
 
       {/* How It Works Section   */}
+
+      <section className="my-10">
+        <div className="text-center my-8"></div>
+        <HowItWorks></HowItWorks>{" "}
+      </section>
+
+      {/* FAQ  */}
+
       <section className="my-10">
         <div className="text-center my-8"></div>
         <Faq></Faq>

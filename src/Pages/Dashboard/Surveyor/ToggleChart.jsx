@@ -1,88 +1,115 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Bar, Pie } from 'react-chartjs-2';
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query'; // Assuming this is your preferred data fetching library
+import { Bar } from 'react-chartjs-2';
 
-const ToggleChart = () => {
-  const { id } = useParams();
-  const [view, setView] = useState('table'); // table or chart
-  const axiosSecure = useAxiosSecure();
+const SurveyResponses = () => {
+  const { id } = useParams(); // Assuming you're using React Router for id parameter
+  const [viewType, setViewType] = useState('table'); // State to toggle between table and chart view
 
-  const { data: survey, isLoading, isError, error } = useQuery({
-    queryKey: ['survey', id],
+  // Example data fetching with useQuery, adjust as per your actual setup
+  const { data: surveyResponses, isLoading, isError, error } = useQuery({
+    queryKey: ['surveyResponses', id],
     queryFn: async () => {
-      const { data } = await axiosSecure.get(`/survey/${id}`);
-      return data;
-    }
+      // Fetch survey responses data from API endpoint
+      const response = await fetch(`/api/surveys/${id}/responses`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch survey responses');
+      }
+      return response.json();
+    },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading survey: {error.message}</div>;
-  if (!survey || !survey.questions) return <div>No survey data available</div>;
+  // Function to calculate yes and no counts
+  const calculateCounts = () => {
+    let yesCount = 0;
+    let noCount = 0;
+    if (surveyResponses) {
+      surveyResponses.forEach((response) => {
+        yesCount += response.yesCount;
+        noCount += response.noCount;
+      });
+    }
+    return { yesCount, noCount };
+  };
 
+  // Prepare chart data
   const chartData = {
-    labels: survey.questions.map((q) => q.question),
+    labels: ['Yes', 'No'],
     datasets: [
       {
-        label: 'Yes Votes',
-        data: survey.questions.map((q) => q.yesCount),
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-      },
-      {
-        label: 'No Votes',
-        data: survey.questions.map((q) => q.noCount),
-        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+        label: 'Votes',
+        backgroundColor: ['#34D399', '#EF4444'],
+        borderColor: ['#34D399', '#EF4444'],
+        borderWidth: 1,
+        hoverBackgroundColor: ['#22C292', '#DC2F2F'],
+        hoverBorderColor: ['#22C292', '#DC2F2F'],
+        data: [calculateCounts().yesCount, calculateCounts().noCount],
       },
     ],
   };
 
+  // Toggle view type
+  const toggleView = () => {
+    setViewType((prev) => (prev === 'table' ? 'chart' : 'table'));
+  };
+
+  // Render based on view type
+  const renderView = () => {
+    if (viewType === 'table') {
+      // Render table view
+      return (
+        <div className="table-view">
+          <h3>Survey Responses Table View</h3>
+          {/* Render your table here */}
+          {/* Example: */}
+          <table>
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Yes Count</th>
+                <th>No Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {surveyResponses.map((response) => (
+                <tr key={response.id}>
+                  <td>{response.question}</td>
+                  <td>{response.yesCount}</td>
+                  <td>{response.noCount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    } else if (viewType === 'chart') {
+      // Render chart view
+      return (
+        <div className="chart-view">
+          <h3>Survey Responses Chart View</h3>
+          <Bar data={chartData} />
+        </div>
+      );
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+
   return (
-    <div className="py-4 bg-white max-w-screen-md mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-6">
-        <h3 className="text-2xl sm:text-3xl leading-normal font-extrabold tracking-tight text-gray-900">
-          Survey Responses
-        </h3>
-        <button onClick={() => setView('table')} className="mr-2 p-2 bg-blue-500 text-white rounded">
+    <div className="survey-responses">
+      <div className="toggle-buttons">
+        <button onClick={() => setViewType('table')} className={viewType === 'table' ? 'active' : ''}>
           Table View
         </button>
-        <button onClick={() => setView('chart')} className="p-2 bg-blue-500 text-white rounded">
+        <button onClick={() => setViewType('chart')} className={viewType === 'chart' ? 'active' : ''}>
           Chart View
         </button>
       </div>
-      {view === 'table' ? (
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead>
-            <tr>
-              <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Question
-              </th>
-              <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Yes Votes
-              </th>
-              <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                No Votes
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {survey.questions.map((q) => (
-              <tr key={q.qId}>
-                <td className="px-6 py-4 whitespace-nowrap">{q.question}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{q.yesCount}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{q.noCount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <div>
-          <Bar data={chartData} options={{ responsive: true }} />
-          <Pie data={chartData} options={{ responsive: true }} />
-        </div>
-      )}
+      {renderView()}
     </div>
   );
 };
 
-export default ToggleChart;
+export default SurveyResponses;
