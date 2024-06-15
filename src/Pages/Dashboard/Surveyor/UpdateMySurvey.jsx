@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../../components/AuthProvider/AuthProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,27 +7,35 @@ import { toast } from "react-toastify";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { v4 as uuidv4 } from "uuid";
 
-
 const UpdateMySurvey = () => {
   const { user } = useContext(AuthContext);
+  console.log(user);
   const { id } = useParams();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
+  const categories = [
+    "Customer Service",
+    "Product Quality",
+    "Cleanliness",
+    "Ambiance",
+    "Pricing",
+  ];
 
   const [formState, setFormState] = useState({
     title: "",
     description: "",
     category: "",
     deadline: "",
-    questions: [{
+    questions: [
+      {
         qId: uuidv4(),
         question: "",
         option: "",
         yesCount: 0,
         noCount: 0,
-      },],
+      },
+    ],
   });
-
 
   // Fetch specific survey data by id
   const {
@@ -52,7 +60,10 @@ const UpdateMySurvey = () => {
   const { mutateAsync } = useMutation({
     mutationFn: async (updatedSurvey) => {
       try {
-        const { data } = await axiosSecure.put(`/update/survey/${id}`, updatedSurvey);
+        const { data } = await axiosSecure.put(
+          `/update/survey/${id}`,
+          updatedSurvey
+        );
         return data;
       } catch (error) {
         console.error("Error updating survey:", error);
@@ -60,6 +71,7 @@ const UpdateMySurvey = () => {
       }
     },
     onSuccess: (data) => {
+      console.log(data);
       refetch();
       toast.success("Survey updated successfully!");
       navigate("/dashboard/surveyor/all-my-survey");
@@ -74,32 +86,21 @@ const UpdateMySurvey = () => {
     }));
   };
 
-  const handleQuestionChange = (index, e) => {
-    const { name, value } = e.target;
-    setFormState((prev) => {
-      const newQuestions = [...prev.questions];
-      newQuestions[index] = {
-        ...newQuestions[index],
-        [name]: value,
-      };
-      return { ...prev, questions: newQuestions };
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Only include fields that are actually changed
     const updatedFields = {};
     if (formState.title !== survey.title) updatedFields.title = formState.title;
-    if (formState.description !== survey.description) updatedFields.description = formState.description;
-    if (formState.category !== survey.category) updatedFields.category = formState.category;
-    if (formState.deadline !== survey.deadline) updatedFields.deadline = formState.deadline;
-    if (JSON.stringify(formState.questions) !== JSON.stringify(survey.questions)) updatedFields.questions = formState.questions;
+    if (formState.description !== survey.description)
+      updatedFields.description = formState.description;
+    if (formState.category !== survey.category)
+      updatedFields.category = formState.category;
+    if (formState.deadline !== survey.deadline)
+      updatedFields.deadline = formState.deadline;
 
     await mutateAsync(updatedFields);
   };
-
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading survey: {error.message}</div>;
@@ -150,22 +151,28 @@ const UpdateMySurvey = () => {
           ></textarea>
         </div>
 
-        <div className="mb-6">
-          <label
-            htmlFor="category"
-            className="block text-sm font-medium text-gray-700"
-          >
+   
+        {/* CATEGORY */}
+        <div className="mb-4">
+          <label className="block text-sm mb-4 font-medium text-gray-700">
             Category
           </label>
-          <input
+          <select
             defaultValue={survey.category}
-            type="text"
+            onChange={handleChange}
+
             name="category"
             id="category"
-            onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
             required
-          />
+          >
+            <option value="">Select Category</option>
+            {categories.map((category, idx) => (
+              <option key={idx} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="mb-6">
@@ -184,29 +191,6 @@ const UpdateMySurvey = () => {
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
             required
           />
-        </div>
-        <div className="mb-6">
-        {survey.questions.map((surveyQuestion, index) => (
-            <div key={surveyQuestion.qId} className="mb-4">
-              <label
-                htmlFor={`question-${index}`}
-                className="block text-sm font-medium text-gray-700"
-              >
-                Question {index + 1}
-              </label>
-              <input
-                defaultValue={
-                  formState.questions[index]?.question || surveyQuestion.question
-                }
-                type="text"
-                name={`question-${index}`}
-                id={`question-${index}`}
-                onChange={(e) => handleQuestionChange(index, e)}
-                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                required
-              />
-            </div>
-          ))}
         </div>
 
         <div className="flex justify-end">

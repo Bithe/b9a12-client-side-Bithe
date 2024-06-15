@@ -1,92 +1,108 @@
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet-async";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../../components/AuthProvider/AuthProvider";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { v4 as uuidv4 } from "uuid";
 
-const UpdateSurvey = () => {
+
+const UpdateMySurvey = () => {
   const { user } = useContext(AuthContext);
-  const { qId } = useParams(); // Get the question ID from URL
+  const { id } = useParams();
+  const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
-  const queryClient = useQueryClient();
 
-  // Fetch survey data by question qID
-  const { data, refetch, isLoading, error } = useQuery({
-    queryKey: ["surveys", qId],
+  const [formState, setFormState] = useState({
+    title: "",
+    description: "",
+    category: "",
+    deadline: "",
+    questions: [{
+        qId: uuidv4(),
+        question: "",
+        option: "",
+        yesCount: 0,
+        noCount: 0,
+      },],
+  });
+
+
+  // Fetch specific survey data by id
+  const {
+    data: survey,
+    isLoading,
+    refetch,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["survey", id],
     queryFn: async () => {
-      const response = await axiosSecure.get(`/survey/questions/${qId}`);
-      console.log(response);
-      return response.data;
+      const { data } = await axiosSecure.get(`/survey/${id}`);
+      return data;
     },
     onSuccess: (data) => {
-      // Set the fetched question data to state
-      setQuestion(data);
+      // Set the initial form state with the fetched survey data
+      setFormState(data);
     },
   });
 
-  const [question, setQuestion] = useState({});
-  console.log(question);
-
-  const categories = [
-    "Customer Service",
-    "Product Quality",
-    "Cleanliness",
-    "Ambiance",
-    "Pricing",
-  ];
-
-  // Update survey mutation
-  const mutation = useMutation({
-    mutationFn: async (updatedQuestion) => {
+  // Mutation for updating survey
+  const { mutateAsync } = useMutation({
+    mutationFn: async (updatedSurvey) => {
       try {
-        // Fetch the existing question data to retain all fields
-        const response = await axiosSecure.get(`/survey/questions/${qId}`);
-        const existingQuestionData = response.data;
-
-        // Merge existing and updated question data to retain existing values
-        const mergedQuestionData = {
-          ...existingQuestionData,
-          ...updatedQuestion,
-        };
-
-        // Update the question with merged data
-        const updateResponse = await axiosSecure.put(
-          `/survey/question/${qId}`,
-          mergedQuestionData
-        );
-
-        return updateResponse.data;
+        const { data } = await axiosSecure.put(`/update/survey/${id}`, updatedSurvey);
+        return data;
       } catch (error) {
-        throw new Error("Error updating survey question");
+        console.error("Error updating survey:", error);
+        throw error;
       }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["surveys", qId]);
-      toast.success("Survey updated successfully");
-    },
-    onError: (error) => {
-      console.error("Error updating survey:", error);
-      toast.error("Error updating survey");
+    onSuccess: (data) => {
+      refetch();
+      toast.success("Survey updated successfully!");
+      navigate("/dashboard/surveyor/all-my-survey");
     },
   });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setQuestion((prevQuestion) => ({
-      ...prevQuestion,
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
 
+  // const handleQuestionChange = (index, e) => {
+  //   const { name, value } = e.target;
+  //   setFormState((prev) => {
+  //     const newQuestions = [...prev.questions];
+  //     newQuestions[index] = {
+  //       ...newQuestions[index],
+  //       [name]: value,
+  //     };
+  //     return { ...prev, questions: newQuestions };
+  //   });
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    mutation.mutate(question);
+
+    // Only include fields that are actually changed
+    const updatedFields = {};
+    if (formState.title !== survey.title) updatedFields.title = formState.title;
+    if (formState.description !== survey.description) updatedFields.description = formState.description;
+    if (formState.category !== survey.category) updatedFields.category = formState.category;
+    if (formState.deadline !== survey.deadline) updatedFields.deadline = formState.deadline;
+    // if (JSON.stringify(formState.questions) !== JSON.stringify(survey.questions)) updatedFields.questions = formState.questions;
+
+    await mutateAsync(updatedFields);
   };
 
+
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading survey</div>;
+  if (isError) return <div>Error loading survey: {error.message}</div>;
 
   return (
     <div className="py-4 bg-white max-w-screen-md mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,7 +123,7 @@ const UpdateSurvey = () => {
             Title
           </label>
           <input
-            defaultValue={data.question}
+            defaultValue={survey.title}
             type="text"
             name="title"
             id="title"
@@ -125,7 +141,7 @@ const UpdateSurvey = () => {
             Description
           </label>
           <textarea
-            defaultValue={data?.description}
+            defaultValue={survey.description}
             name="description"
             id="description"
             onChange={handleChange}
@@ -141,21 +157,15 @@ const UpdateSurvey = () => {
           >
             Category
           </label>
-          <select
+          <input
+            defaultValue={survey.category}
+            type="text"
             name="category"
             id="category"
-            defaultValue={data?.category}
             onChange={handleChange}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
             required
-          >
-            <option value="">Select Category</option>
-            {categories.map((category, idx) => (
-              <option key={idx} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         <div className="mb-6">
@@ -166,7 +176,7 @@ const UpdateSurvey = () => {
             Deadline
           </label>
           <input
-            defaultValue={data?.deadline}
+            defaultValue={survey.deadline}
             type="date"
             name="deadline"
             id="deadline"
@@ -175,6 +185,29 @@ const UpdateSurvey = () => {
             required
           />
         </div>
+        {/* <div className="mb-6">
+        {survey.questions.map((surveyQuestion, index) => (
+            <div key={surveyQuestion.qId} className="mb-4">
+              <label
+                htmlFor={`question-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
+                Question {index + 1}
+              </label>
+              <input
+                defaultValue={
+                  formState.questions[index]?.question || surveyQuestion.question
+                }
+                type="text"
+                name={`question-${index}`}
+                id={`question-${index}`}
+                onChange={(e) => handleQuestionChange(index, e)}
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                required
+              />
+            </div>
+          ))}
+        </div> */}
 
         <div className="flex justify-end">
           <button
@@ -189,4 +222,4 @@ const UpdateSurvey = () => {
   );
 };
 
-export default UpdateSurvey;
+export default UpdateMySurvey;
