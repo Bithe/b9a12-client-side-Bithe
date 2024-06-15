@@ -5,9 +5,9 @@ Welcome to SurveyMaster, your ultimate survey management platform!
 ### Website Details
 
 - **Website Name:** SurveyMaster
-- **Admin Username:** admin
-- **Admin Password:** [password]
-- **Live Site URL:** [https://www.surveymaster.com](https://www.surveymaster.com)
+- **Admin Email:** farzana.hossain147@gmail.com
+- **Admin Password:** [1234Rr]
+- **Live Site URL:** [https://zendesk-survey-client.web.app/](https://zendesk-survey-client.web.app/)
 
 ### Main Features 📋
 
