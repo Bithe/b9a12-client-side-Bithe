@@ -16,7 +16,7 @@ const ManageSurveys = () => {
     mutationFn: async (surveyData) => {
       const { data } = await axiosSecure.patch(`/admin/survey/update/${surveyData._id}`, {
         status: surveyData.status,
-        feedback: surveyData.feedback, // Send feedback along with status update
+        feedback: surveyData.feedback, 
       });
       return data;
     },
