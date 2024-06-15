@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query'; // Assuming this is your preferred data fetching library
 import { Bar } from 'react-chartjs-2';
 
-const SurveyResponses = () => {
+const ToggleChart = () => {
   const { id } = useParams(); // Assuming you're using React Router for id parameter
   const [viewType, setViewType] = useState('table'); // State to toggle between table and chart view
 
@@ -12,7 +12,7 @@ const SurveyResponses = () => {
     queryKey: ['surveyResponses', id],
     queryFn: async () => {
       // Fetch survey responses data from API endpoint
-      const response = await fetch(`/api/surveys/${id}/responses`);
+      const response = await fetch(`/dashboard/surveyor/surveys/${id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch survey responses');
       }
@@ -112,4 +112,4 @@ const SurveyResponses = () => {
   );
 };
 
-export default SurveyResponses;
+export default ToggleChart;

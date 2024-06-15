@@ -33,6 +33,7 @@ import AllPayments from "./Pages/Dashboard/Admin/Payments/AllPayments";
 import SurveyResults from "./Pages/Home/SurveyResults/SurveyResults";
 import SurveyAllResponses from "./Pages/Dashboard/Admin/SurveyAllResponses/SurveyAllResponses";
 import SurveyDetails from "./Pages/Dashboard/Surveyor/SurveyDetails";
+import ToggleChart from "./Pages/Dashboard/Surveyor/ToggleChart";
 
 const router = createBrowserRouter([
   {
@@ -184,9 +185,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/surveyor/surveys/:id",
-        element: <PrivateRoute>
-          <SurveyDetails></SurveyDetails>
-        </PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <SurveyDetails></SurveyDetails>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/surveyor/surveys/toggle/:id",
+        element: (
+          <PrivateRoute>
+            <ToggleChart></ToggleChart>{" "}
+          </PrivateRoute>
+        ),
       },
 
       // ADMIN
