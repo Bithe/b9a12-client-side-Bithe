@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 const ManageSurveys = () => {
   const axiosSecure = useAxiosSecure();
 
-  // State for managing feedback modal
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [feedback, setFeedback] = useState('');
 
