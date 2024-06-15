@@ -34,6 +34,7 @@ import SurveyResults from "./Pages/Home/SurveyResults/SurveyResults";
 import SurveyAllResponses from "./Pages/Dashboard/Admin/SurveyAllResponses/SurveyAllResponses";
 import SurveyDetails from "./Pages/Dashboard/Surveyor/SurveyDetails";
 import ToggleChart from "./Pages/Dashboard/Surveyor/ToggleChart";
+import Feedbacks from "./Pages/Dashboard/Surveyor/Feedbacks";
 
 const router = createBrowserRouter([
   {
@@ -192,10 +193,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/surveyor/surveys/toggle/:id",
+        path: "/dashboard/surveyor/feedbacks",
         element: (
           <PrivateRoute>
-            <ToggleChart></ToggleChart>{" "}
+            <Feedbacks></Feedbacks>{" "}
           </PrivateRoute>
         ),
       },

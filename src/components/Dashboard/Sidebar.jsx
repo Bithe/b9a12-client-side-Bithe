@@ -21,6 +21,7 @@ import { FaUsers } from "react-icons/fa";
 import { MdOutlineManageSearch } from "react-icons/md";
 import { LiaComments } from "react-icons/lia";
 import { RiSecurePaymentFill } from "react-icons/ri";
+import { VscFeedback } from "react-icons/vsc";
 
 const Sidebar = () => {
   const { user } = useContext(AuthContext);
@@ -243,7 +244,7 @@ const Sidebar = () => {
                   >
                     <FaUsers className="w-5 h-5" />
                     <span className="mx-4 font-medium">
-                       My Survey Responses{" "}
+                      My Survey Responses{" "}
                     </span>
                   </NavLink>
 
@@ -255,7 +256,7 @@ const Sidebar = () => {
                       }`
                     }
                   >
-                    <FaUsers className="w-5 h-5" />
+                    <VscFeedback className="w-5 h-5" />
                     <span className="mx-4 font-medium">Feedbacks </span>
                   </NavLink>
                   {/* <NavLink
@@ -273,7 +274,6 @@ const Sidebar = () => {
               )}
 
               {/*SURVEYOR ENDS ------------------------------------------------------------------------------------- */}
-
 
               {/* ADMIN WILL SEE---------------------------------------------------------------------------- */}
 
@@ -295,7 +295,6 @@ const Sidebar = () => {
 
                     <span className="mx-4 font-medium">Manage Users</span>
                   </NavLink>
-
                   <NavLink
                     to="/dashboard/admin/surveys"
                     className={({ isActive }) =>
@@ -310,7 +309,6 @@ const Sidebar = () => {
 
                     <span className="mx-4 font-medium">Manage Surveys</span>
                   </NavLink>
-
                   <NavLink
                     to="/dashboard/admin/payments"
                     className={({ isActive }) =>
@@ -349,25 +347,19 @@ const Sidebar = () => {
           <hr />
 
           {/* Profile Menu ----------------------------------------------------- */}
-          {role === "user" ||
-            (role === "pro-user" && (
-              <NavLink
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
-                  }`
-                }
-              >
-                <FcSettings className="w-5 h-5" />
-
-                <span
-                  onClick={handleRequestSurveyor}
-                  className="mx-4 font-medium"
-                >
-                  Request to be a Surveyor
-                </span>
-              </NavLink>
-            ))}
+          {role === "user" || role === "pro-user" ? (
+            <NavLink
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 my-5 transition-colors duration-300 transform hover:bg-gray-300 hover:text-gray-700 ${
+                  isActive ? "bg-gray-300 text-gray-700" : "text-gray-600"
+                }`
+              }
+              onClick={handleRequestSurveyor}
+            >
+              <FcSettings className="w-5 h-5" />
+              <span className="mx-4 font-medium">Request to be a Surveyor</span>
+            </NavLink>
+          ) : null}
 
           <NavLink
             onClick={logout}

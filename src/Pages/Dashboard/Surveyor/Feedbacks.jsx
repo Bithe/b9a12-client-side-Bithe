@@ -1,32 +1,27 @@
-import React, { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-import axios from 'axios';
+import { useContext } from "react";
+import { Helmet } from "react-helmet-async";
+import { AuthContext } from "../../../components/AuthProvider/AuthProvider";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const Feedbacks = () => {
-  const [feedbacks, setFeedbacks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
 
-  // Fetch feedbacks
-  const fetchFeedbacks = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/dashboard/surveyor/feedbacks');
-      setFeedbacks(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching feedbacks:', error);
-      setError('Error fetching feedbacks');
-      setLoading(false);
-    }
-  };
+  const {
+    data: feedbacks,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["feedbacks", user.email], // Pass an array as the queryKey
+    queryFn: async () => {
+      const response = await axiosSecure.get(`/dashboard/surveyor/feedbacks/${user.email}`);
+      return response.data;
+    },
+  });
 
-  // Initial fetch
-  useEffect(() => {
-    fetchFeedbacks();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="py-4 bg-white max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8">
@@ -59,10 +54,18 @@ const Feedbacks = () => {
           <tbody>
             {feedbacks.map((feedback) => (
               <tr key={feedback._id}>
-                <td className="py-2 px-4 border-b border-gray-200">{feedback.title}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{feedback.surveyor.email}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{feedback.category}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{feedback.feedback}</td>
+                <td className="py-2 px-4 border-b border-gray-200">
+                  {feedback.title}
+                </td>
+                <td className="py-2 px-4 border-b border-gray-200">
+                  {feedback.surveyor.email}
+                </td>
+                <td className="py-2 px-4 border-b border-gray-200">
+                  {feedback.category}
+                </td>
+                <td className="py-2 px-4 border-b border-gray-200">
+                  {feedback.feedback}
+                </td>
               </tr>
             ))}
           </tbody>
