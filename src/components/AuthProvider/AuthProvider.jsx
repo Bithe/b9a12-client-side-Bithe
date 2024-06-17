@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../../Firebase/firebaseConfiq";
 import axios from "axios";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 // import axios from "axios";
 
 export const AuthContext = createContext(null);
@@ -31,6 +32,7 @@ const AuthProvider = ({ children }) => {
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
   const twitterProvider = new TwitterAuthProvider();
+  const axiosPublic = useAxiosPublic();
 
   // FOR REGISTRATION
   const registerUser = (email, password) => {
@@ -99,23 +101,67 @@ const AuthProvider = ({ children }) => {
     return data;
   };
   // ONCHANGE SETUP
+  // 000000000
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+  //     if (currentUser) {
+  //       console.log(currentUser);
+  //       setUser(currentUser);
+  //       saveUser(currentUser);
+  //       setLoader(false);
+  //     } else {
+  //       console.log("logout");
+  //       setUser(null);
+  //       setLoader(false);
+  //     }
+  //   });
+
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [reload]);
+  // 0000000
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        console.log(currentUser);
-        setUser(currentUser);
-        saveUser(currentUser);
-        setLoader(false);
-      } else {
-        console.log("logout");
-        setUser(null);
-        setLoader(false);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      try {
+        if (currentUser) {
+          const userEmail = currentUser.email;
+          const loggedUser = { email: userEmail };
+
+          console.log(currentUser);
+          const response = await axiosPublic.post(
+            "https://y-pi-opal.vercel.app/jwt",
+            loggedUser,
+            { withCredentials: true }
+          );
+          if (response.data.token) {
+            localStorage.setItem('access-token', response.data.token);
+          }
+          console.log("Token response", response.data);
+
+          setUser(currentUser);
+          setLoader(false);
+        } else {
+          console.log("Logout");
+            const response = await axios.post(
+              "https://y-pi-opal.vercel.app/logout",
+              null,
+              { withCredentials: true }
+            );
+            localStorage.removeItem('access-token');
+
+            console.log(response.data);
+
+            setUser(null);
+            setLoader(false);
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
     });
 
-    return () => {
-      unsubscribe();
-    };
+    // Cleanup function
+    return () => unsubscribe();
   }, [reload]);
 
   return (

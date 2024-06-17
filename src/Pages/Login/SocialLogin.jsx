@@ -19,7 +19,7 @@ const SocialLogin = () => {
         navigate(back);
 
         const { data } = await axios.post(
-          'https://prod-swap-hub-server.vercel.app/jwt',
+          'https://y-pi-opal.vercel.app/jwt',
           { email: result?.user?.email },
           { withCredentials: true }
         );
