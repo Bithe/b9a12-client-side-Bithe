@@ -109,6 +109,15 @@ Welcome to SurveyMaster, your ultimate survey management platform!
    ```bash
    git clone [https://github.com/Bithe/b9a12-client-side-Bithe.git]
 
+2. **Install dependencies:**
+
+3. **Set up environment variables:**
+- Create a `.env` file in the root directory.
+- Define environment variables such as database connection details, JWT secret, etc.
+
+4. **Run the application:**
+
+
 
 
 
