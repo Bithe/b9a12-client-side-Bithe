@@ -107,24 +107,7 @@ Welcome to SurveyMaster, your ultimate survey management platform!
 
 1. Clone the repository:
    ```bash
-   git clone [repository-url]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   git clone [https://github.com/Bithe/b9a12-client-side-Bithe.git]
 
 
 
